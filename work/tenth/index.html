@@ -26,6 +26,59 @@
     </div>
     <script src="../../common/js/jquery.js"></script>
     <script>
+      $('.search__btn').on('click',function(){
+        request();
+      });
+
+      function request(){
+        var searchText = $('.search__text__input').val();
+        $('.container > p').remove();
+        $('.lists > li').remove();
+        $.ajax({
+          url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
+          type: 'GET',
+          datatype: 'json',
+          data: {
+            applicationId: '1019399324990976605',
+            booksGenreId: '001',
+            hits: '20',
+            keyword: searchText,
+          },
+        }).done(function(data){
+          showList(data);
+          console.log(data);
+        }).fail(function(ee){
+          console.log(ee);
+          showError();
+        });
+      };
+
+      function showList(data){
+        if(data.count >= 1){
+          var lists = '';
+          $.each(data.Items, function (index, book){
+            var item = book.Item;
+            lists = lists + '<li class="lists__item">' +
+                          '<div class="lists__item__inner">' +
+                            '<a href="" class="lists__item__link" target="_blank">' +
+                              '<img src="' + item.largeImageUrl + '" class="lists__item__img" alt="' + item.title + '">' +
+                              '<p class="lists__item__detail">作品名：' + item.title + '</p>' +
+                              '<p class="lists__item__detail">作者：' + item.author + '</p>' +
+                              '<p class="lists__item__detail">出版社：' + item.publisherName + '</p>' +
+                            '</a>' +
+                          '</div>' +
+                        '</li>';
+          });
+          $('.lists').html(lists);
+        } else {
+          $('.container').append('<p>検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</p>');
+        }
+      };
+
+      function showError(){
+        $('.container').append('<p>２文字以上で検索して下さい。</p>');
+      };
+
       // 楽天ブックスの総合検索APIを使って製作してください。
       // answerの挙動を良く見てね！
       //

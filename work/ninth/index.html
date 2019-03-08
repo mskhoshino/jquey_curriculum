@@ -15,6 +15,32 @@
     </div>
     <script src="../../common/js/jquery.js"></script>
     <script>
+    //console.log('text');
+    $(function(){
+      $.ajax({
+        url: './data.json'
+      })
+      .done(function(data) {
+        console.log(data);
+        console.log(data.colorsArray);
+        //var colorList = '<li class="colorList__item"><p class="colorList__title" style="background-color: ;"></p></li>'
+        //$('.colorList').html(colorList);
+        var list = '';
+        $.each(data.colorsArray, function(index, item){
+          console.log(item.colorName);
+          console.log(item.hexValue);
+          // list += '<li class="colorList__item">' +
+          // '<p class="colorList__title" style="background-color:' + item.hexValue + ' ;">' + item.colorName + '</p>' +
+          // '</li>';
+          list = list + '<li class="colorList__item">' +
+          '<p class="colorList__title" style="background-color:' + item.hexValue + ' ;">' + item.colorName + '</p>' +
+          '</li>';
+        });
+        $('.colorList').html(list);
+        console.log(list);
+     });
+   });
+
       // 今回のカリキュラムではAjax（XMLHttpRequest）というJavaScriptの特殊な機能を使います。
       // この機能はブラウザのセキュリティ機能によってはサーバーを立てないとうまく動作しない可能性があるので、サーバーを立てる必要があります。
       // ターミナルで`jquery-curriculum`に移動したあとに`open -a '/Applications/Google Chrome.app' http://localhost:8000/work/ninth/ && python -m SimpleHTTPServer 8000`を叩くとサーバを立てることができます。またブラウザも勝手に立ち上がります。サーバーを止める方法はターミナルでcontrol + cを打つと止まります。

@@ -28,6 +28,42 @@
     </div>
     <script src="../../common/js/jquery.js"></script>
     <script>
+      $(function(){
+        var $topBtn = $('.scrollTopBtn');
+        $(window).on('scroll', function(){
+          if ($(this).scrollTop() > 100) {
+            $topBtn.fadeIn();
+          } else {
+            $topBtn.fadeOut();
+          }
+        });
+        $topBtn.on('click', function(){
+          $('html, body').animate({
+            scrollTop: 0
+          });
+        });
+
+        $('.menu__btn').on('click', function(event) {
+          //console.log(event.currentTarget);
+          //console.log(this);
+          var menuData = $(event.currentTarget).data('scroll-place-type');
+          $('.title').each(function(index, item) {
+            // console.log(index);
+            //console.log(item);
+            //console.log(this);
+            var contentsData = $(item).data('scroll-place-type');
+            if(menuData == contentsData) {
+              var scrollOffset = $(item).offset().top;
+              $('html, body').animate({
+                scrollTop : scrollOffset
+              });
+            }
+          });
+          //console.log(scrollOffset);
+          //var contentsData = $(this).data('scroll-place-type');
+        });
+      });
+
       // 今回やるのはページ内スクロールです。
       // 左上にあるメニューを押して、そのタイトルと同じ位置までスクロールするアニメーションです。
       // また100pxほどスクロールすると右下にボタンがフェードインします。
